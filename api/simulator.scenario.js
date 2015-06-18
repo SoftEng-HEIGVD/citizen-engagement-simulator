@@ -144,10 +144,27 @@ var CITIZEN = null;
 var ISSUE_TYPES = null;
 var ISSUES = {};
 
-var MIN_LAT = 46.766129;
-var MAX_LAT = 46.784234;
-var MIN_LNG = 6.622009;
-var MAX_LNG = 6.651878;
+var ZIP_CODES = [ 1400, 1401, 1446, 1530];
+
+var COORDINATES = [{
+	minLat: 46.766129,
+	maxLat: 46.784234,
+	minLng: 6.622009,
+	maxLng: 6.651878,
+	zipCodes: [ 1400, 1401 ]
+}, {
+	minLat: 46.778733001552915,
+	maxLat: 46.79221800961638,
+	minLng: 6.514763832092285,
+	maxLng: 6.541028022766113,
+	zipCodes: [ 1446 ]
+}, {
+	minLat: 46.81171519421205,
+	maxLat: 46.83532443497212,
+	minLng: 6.922931671142578,
+	maxLng: 6.956748962402344,
+	zipCodes: [ 1530 ]
+}];
 
 var STEP_QUEUE = new Queue();
 
@@ -167,14 +184,20 @@ function generateIssue() {
 
 	var description = DESCRIPTIONS[issueType.code][randomInt(0, DESCRIPTIONS[issueType.code].length)];
 
+	var zip = ZIP_CODES[randomInt(0, ZIP_CODES.length)];
+
+	var coordinates = _.find(COORDINATES, function(coordinates) {
+		return _.contains(coordinates.zipCodes, zip);
+	});
+
 	return {
 		flow: description.flow,
 		owner: CITIZEN[randomInt(0, CITIZEN.length)],
 		issue : {
 			description: description.desc,
-			lng: random(MIN_LNG, MAX_LNG),
-			lat: random(MIN_LAT, MAX_LAT),
-			zip: 1400,
+			lng: random(coordinates.minLng, coordinates.maxLng),
+			lat: random(coordinates.minLat, coordinates.maxLat),
+			zip: zip,
 			imageUrl: ISSUE_TYPE_IMAGES[issueType.code][randomInt(0, ISSUE_TYPE_IMAGES[issueType.code].length)],
 			issueTypeId: issueType.id
 		}
