@@ -174,6 +174,7 @@ function generateIssue() {
 			description: description.desc,
 			lng: random(MIN_LNG, MAX_LNG),
 			lat: random(MIN_LAT, MAX_LAT),
+			zip: 1400,
 			imageUrl: ISSUE_TYPE_IMAGES[issueType.code][randomInt(0, ISSUE_TYPE_IMAGES[issueType.code].length)],
 			issueTypeId: issueType.id
 		}
@@ -208,7 +209,7 @@ var scenario = new copilot.Scenario({
 });
 
 scenario.addParam('citizen_url', {
-	default: process.env.CITIZEN_SERVER_URL || 'http://citizen:3000'
+	default: process.env.CITIZEN_SERVER_URL || 'http://localhost:3000'
 });
 
 scenario.step('configure base URL', function() {
@@ -392,9 +393,7 @@ function createAndAssignIssue() {
 		});
 
 	NB_ISSUES++;
-
-	return;
-};
+}
 
 var NB_TICKS = 1;
 
@@ -427,7 +426,7 @@ function tick() {
 		});
 
 	NB_TICKS++;
-};
+}
 
 STEP_QUEUE.pushRandom({ fn: createAndAssignIssue });
 
